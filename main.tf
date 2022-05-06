@@ -29,12 +29,13 @@ resource "aws_backup_plan" "plan" {
     target_vault_name = aws_backup_vault.vault.name
     schedule          = var.backup_schedule
 
-
-    lifecycle {
-      cold_storage_after = var.rule_lifecycle_cold_storage_after
-      delete_after       = var.rule_lifecycle_delete_after
+    dynamic "lifecycle" {
+      for_each = var.cold_storage_after != null || var.delete_after != null ? [1] : []
+      content {
+        cold_storage_after = var.cold_storage_after
+        delete_after       = var.delete_after
+      }
     }
-
     recovery_point_tags = {
       Name = "${local.name}-backup-recovery-point"
     }

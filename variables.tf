@@ -16,3 +16,15 @@ variable "kms_key_arn" {
   description = "(optional) Existing KMS Key ARN. Default: \"\""
   default     = ""
 }
+
+variable "cold_storage_after" {
+  type        = number
+  description = "(Optional) Specifies the number of days after creation that a recovery point is moved to cold storage."
+  default     = null
+}
+
+variable "delete_after" {
+  type        = number
+  description = "(Optional) Specifies the number of days after creation that a recovery point is deleted. Must be 90 days greater than cold_storage_after"
+  default     = null
+}
