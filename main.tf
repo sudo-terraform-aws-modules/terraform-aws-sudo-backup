@@ -1,5 +1,5 @@
 
-resource "aws_kms_key" "" {
+resource "aws_kms_key" "kms_key" {
   count               = local.create_kms_key ? 1 : 0
   description         = "KMS key for Backup Encryption at rest"
   enable_key_rotation = true
