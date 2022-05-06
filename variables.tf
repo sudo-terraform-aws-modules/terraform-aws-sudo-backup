@@ -28,3 +28,12 @@ variable "delete_after" {
   description = "(Optional) Specifies the number of days after creation that a recovery point is deleted. Must be 90 days greater than cold_storage_after"
   default     = null
 }
+
+
+variable "selection_tags" {
+  type        = list(any)
+  description = "(Optional) List of objects containing tag key value and type (comparison operator)."
+  default = [{
+
+  }]
+}

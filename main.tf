@@ -43,17 +43,42 @@ resource "aws_backup_plan" "plan" {
   }
 }
 
+resource "aws_iam_role" "iam_role" {
+  name               = "${local.name}-backup-role"
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": ["sts:AssumeRole"],
+      "Effect": "allow",
+      "Principal": {
+        "Service": ["backup.amazonaws.com"]
+      }
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy_attachment" "iam_role_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
+  role       = aws_iam_role.iam_role.name
+}
 
 
 resource "aws_backup_selection" "selection" {
-  name         = "selection-${local.name}-backup"
-  iam_role_arn = aws_iam_role.backup_role.arn
+  name         = "${local.name}-backup-selection"
+  iam_role_arn = aws_iam_role.iam_role.arn
 
-  plan_id = aws_backup_plan.backup_plan.id
+  plan_id = aws_backup_plan.plan.id
 
-  selection_tag {
-    type  = var.selection_tag_type
-    key   = var.selection_tag_key
-    value = var.selection_tag_value
+  dynamic "selection_tag" {
+    for_each = var.selection_tags
+    content {
+      type  = lookup(selection_tag.value, "type", "STRINGEQUALS")
+      key   = lookup(selection_tag.value, "key", "backup")
+      value = lookup(selection_tag.value, "value", "true")
+    }
   }
 }
