@@ -10,7 +10,7 @@ resource "aws_kms_key" "kms_key" {
 }
 
 resource "aws_backup_vault" "vault" {
-  name        = "${local.name}-backup-vault "
+  name        = "${local.name}-backup-vault"
   kms_key_arn = local.kms_key_arn
   tags = {
     Name = "${local.name}-backup-vault"
