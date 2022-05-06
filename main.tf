@@ -19,7 +19,7 @@ resource "aws_backup_vault" "vault" {
 
 
 resource "aws_backup_plan" "plan" {
-  name = "plan-${local.name}-backup-plan"
+  name = "${local.name}-backup-plan"
   tags = {
     Name = "${local.name}-backup-plan"
   }
