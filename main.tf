@@ -5,27 +5,27 @@ resource "aws_kms_key" "" {
   enable_key_rotation = true
 
   tags = {
-    Name = "${var.name}-backup-encryption-key"
+    Name = "${local.name}-backup-encryption-key"
   }
 }
 
 resource "aws_backup_vault" "vault" {
-  name        = "${var.name}-backup-vault "
+  name        = "${local.name}-backup-vault "
   kms_key_arn = local.kms_key_arn
   tags = {
-    Name = "${var.name}-backup-vault"
+    Name = "${local.name}-backup-vault"
   }
 }
 
 
 resource "aws_backup_plan" "plan" {
-  name = "plan-${var.name}-backup-plan"
+  name = "plan-${local.name}-backup-plan"
   tags = {
-    Name = "${var.name}-backup-plan"
+    Name = "${local.name}-backup-plan"
   }
 
   rule {
-    rule_name         = "${var.name}-backup-rule"
+    rule_name         = "${local.name}-backup-rule"
     target_vault_name = aws_backup_vault.vault.name
     schedule          = var.backup_schedule
 
@@ -36,7 +36,7 @@ resource "aws_backup_plan" "plan" {
     }
 
     recovery_point_tags = {
-      Name = "${var.name}-backup-recovery-point"
+      Name = "${local.name}-backup-recovery-point"
     }
 
   }
@@ -45,7 +45,7 @@ resource "aws_backup_plan" "plan" {
 
 
 resource "aws_backup_selection" "selection" {
-  name         = "selection-${var.name}-backup"
+  name         = "selection-${local.name}-backup"
   iam_role_arn = aws_iam_role.backup_role.arn
 
   plan_id = aws_backup_plan.backup_plan.id
