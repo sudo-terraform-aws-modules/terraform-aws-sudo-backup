@@ -8,9 +8,12 @@ The below example will configure AWS to backup all resources in your selected re
 
 ```backup = true```
 
+*Note:* There are no required in put variables, Terraform registry has a bug which shows some variables as required.
+
 Code Example:
 ```hcl
-module "aws_backup" {
-  source = "https://github.com/sudo-terraform-aws-modules/terraform-aws-sudo-backup.git"
+module "sudo-backup" {
+  source  = "sudo-terraform-aws-modules/sudo-backup/aws"
+  version = "1.0.0"
 }
 ```
