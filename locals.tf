@@ -4,6 +4,9 @@ locals {
 
   name = var.name == "sudo-backup" ? "sudo-backup-${random_string.random.result}" : var.name
 
+  secondary_vault_cold_storage_after = var.secondary_vault_cold_storage_after != null ? var.secondary_vault_cold_storage_after : var.cold_storage_after
+  secondary_vault_delete_after       = var.secondary_vault_delete_after != null ? var.secondary_vault_delete_after : var.delete_after
+
 }
 
 resource "random_string" "random" {

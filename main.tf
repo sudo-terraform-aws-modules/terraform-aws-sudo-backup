@@ -36,6 +36,20 @@ resource "aws_backup_plan" "plan" {
         delete_after       = var.delete_after
       }
     }
+    dynamic "copy_action" {
+      for_each = var.secondary_vault_arn != null ? [1] : []
+      content {
+        destination_vault_arn = var.secondary_vault_arn
+        dynamic "lifecycle" {
+          for_each = local.secondary_vault_cold_storage_after != null || local.secondary_vault_delete_after != null ? [1] : []
+          content {
+            cold_storage_after = local.secondary_vault_cold_storage_after
+            delete_after       = local.secondary_vault_delete_after
+          }
+        }
+      }
+    }
+
     recovery_point_tags = {
       Name = "${local.name}-backup-recovery-point"
     }
