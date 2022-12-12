@@ -29,6 +29,24 @@ variable "delete_after" {
   default     = null
 }
 
+variable "secondary_vault_arn" {
+  type        = string
+  description = "(Optional) Specifies the ARN of the secondary vault for DR."
+  default     = null
+}
+
+variable "secondary_vault_cold_storage_after" {
+  type        = number
+  description = "(Optional) Specifies the number of days after creation that a recovery point is moved to cold storage for Secondary Vault. Default uses the value from primary vault."
+  default     = null
+}
+
+variable "secondary_vault_delete_after" {
+  type        = number
+  description = "(Optional) Specifies the number of days after creation that a recovery point is deleted for secondary Vault. Must be 90 days greater than cold_storage_after. Default uses the value from primary vault."
+  default     = null
+}
+
 
 variable "selection_tags" {
   type        = list(any)
