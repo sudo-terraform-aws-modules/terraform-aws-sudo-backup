@@ -47,7 +47,12 @@ variable "secondary_vault_delete_after" {
   default     = null
 }
 
-
+# # Example
+#   selection_tags = [{
+#     type  = "STRINGEQUALS"
+#     key   = "foo"
+#     value = "bar"
+#   }]
 variable "selection_tags" {
   type        = list(any)
   description = "(Optional) List of objects containing tag key value and type (comparison operator)."
