@@ -60,3 +60,9 @@ variable "selection_tags" {
 
   }]
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "(Optional) Map of tags to apply to all resources."
+  default     = {}
+}

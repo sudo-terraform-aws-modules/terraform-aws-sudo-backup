@@ -14,6 +14,6 @@ output "iam_role_arn" {
 }
 
 output "kms_key_arn" {
-  value       = local.create_kms_key ? aws_kms_key.kms_key[0].arn : null
+  value       = try(aws_kms_key.kms_key[0].arn, null)
   description = "ARN of the KMS Key if created, otherwise null"
 }

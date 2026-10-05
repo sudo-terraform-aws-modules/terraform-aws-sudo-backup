@@ -4,25 +4,25 @@ resource "aws_kms_key" "kms_key" {
   description         = "KMS key for Backup Encryption at rest"
   enable_key_rotation = true
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "${local.name}-backup-encryption-key"
-  }
+  })
 }
 
 resource "aws_backup_vault" "vault" {
   name        = "${local.name}-backup-vault"
   kms_key_arn = local.kms_key_arn
-  tags = {
+  tags = merge(var.tags, {
     Name = "${local.name}-backup-vault"
-  }
+  })
 }
 
 
 resource "aws_backup_plan" "plan" {
   name = "${local.name}-backup-plan"
-  tags = {
+  tags = merge(var.tags, {
     Name = "${local.name}-backup-plan"
-  }
+  })
 
   rule {
     rule_name         = "${local.name}-backup-rule"
@@ -59,13 +59,14 @@ resource "aws_backup_plan" "plan" {
 
 resource "aws_iam_role" "iam_role" {
   name               = "${local.name}-backup-role"
+  tags               = var.tags
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Action": ["sts:AssumeRole"],
-      "Effect": "allow",
+      "Effect": "Allow",
       "Principal": {
         "Service": ["backup.amazonaws.com"]
       }
